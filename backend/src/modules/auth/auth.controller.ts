@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   NotFoundException,
   Post,
@@ -16,7 +17,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly adminkService: AdminkService,
   ) {}
-  @isPublic() //bo qua jwt-auth.guard.ts cai global
+  @isPublic()
   @UseGuards(LocalAuthGuard) //Kích hoạt LocalAuthGuard
   @Post('login')
   async login(@Request() req: any) {

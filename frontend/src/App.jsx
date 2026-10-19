@@ -15,7 +15,7 @@
  */
 
 import React, { Suspense, useEffect } from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes,BrowserRouter } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
@@ -30,7 +30,7 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 // Pages
 const Login = React.lazy(() => import('./views/pages/admink/Login'))
 const Register = React.lazy(
-  () => import('./views/authentication/register/Register')
+  () => import('./views/pages/admink/Register')
 )
 const CheckEmail = React.lazy(
   () => import('./views/authentication/check-email/CheckEmail')
@@ -92,7 +92,7 @@ const App = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Suspense
         fallback={
           <div className="pt-3 text-center">
@@ -103,13 +103,13 @@ const App = () => {
         <Routes>
           <Route
             exact
-            path="/authentication/login"
+            path="/admink/login"
             name="Login Page"
             element={<Login />}
           />
           <Route
             exact
-            path="/authentication/register"
+            path="/admink/register"
             name="Register Page"
             element={<Register />}
           />
@@ -152,7 +152,7 @@ const App = () => {
           <Route path="*" name="Home" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
 

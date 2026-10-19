@@ -10,4 +10,11 @@ export default defineConfig({
       src: path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    watch: {
+      // Bật chế độ liên tục kiểm tra thay đổi file (rất hữu ích nếu HMR mặc định bị lỗi)
+      usePolling: true,
+      interval: 100, // Kiểm tra mỗi 100ms
+    },
+  },
 })
