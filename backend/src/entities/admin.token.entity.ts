@@ -14,6 +14,9 @@ export class AdminToken {
   @Column()
   adm_id: number;
 
+@Column({ nullable: true })
+  access_token?: string;
+
   @Column({ nullable: true })
   refresh_token?: string;
 

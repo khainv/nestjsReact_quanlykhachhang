@@ -29,6 +29,7 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
 // Pages
 const Login = React.lazy(() => import('./views/pages/admink/Login'))
+const Logout = React.lazy(() => import('./views/pages/admink/Logout'))
 const Register = React.lazy(
   () => import('./views/pages/admink/Register')
 )
@@ -106,6 +107,12 @@ const App = () => {
             path="/admink/login"
             name="Login Page"
             element={<Login />}
+          />
+          <Route
+            exact
+            path="/admink/logout"
+            name="Login Page"
+            element={<Logout />}
           />
           <Route
             exact

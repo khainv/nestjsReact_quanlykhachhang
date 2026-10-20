@@ -36,7 +36,7 @@ export class AuthService {
     });
     const hashRefeshToken = await bcrypt.hash(refesh_token, 10);
     //save hashRefreshToken
-    await this.adminkService.saveRefeshToken(hashRefeshToken, user.id);
+    await this.adminkService.saveRefeshToken(access_token,hashRefeshToken, user.id);
     return {
       adm_name: user.adm_name,
       access_token: access_token,

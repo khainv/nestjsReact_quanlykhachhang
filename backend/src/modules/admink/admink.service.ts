@@ -46,17 +46,19 @@ export class AdminkService {
     }
     return admToken;
   }
-  async saveRefeshToken(refresh_token: string, adm_id: number) {
+  async saveRefeshToken(access_token:string,refresh_token: string, adm_id: number) {
     const adm = await this.findOneAdminToken({ adm_id });
     let admToken: any = {};
     if (!adm) {
       admToken = this.adminTokenRepository.create({
         adm_id: adm_id,
         refresh_token: refresh_token,
+        access_token:access_token
       });
     } else {
       admToken.adm_id = adm_id;
       admToken.refresh_token = refresh_token;
+      admToken.access_token=access_token;
     }
     return this.adminTokenRepository.save(admToken);
   }

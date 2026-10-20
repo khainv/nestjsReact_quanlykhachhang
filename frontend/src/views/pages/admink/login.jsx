@@ -47,13 +47,12 @@ const Login = () => {
     if (!adm_password) {
       tempErrors.adm_password = 'Mật khẩu không được để trống'
       isValid = false
-    } else if (adm_password.length < 6) {
-      tempErrors.adm_password = 'Mật khẩu phải chứa ít nhất 6 ký tự'
+    } else if (adm_password.length < 3) {
+      tempErrors.adm_password = 'Mật khẩu phải chứa ít nhất 3 ký tự'
       isValid = false
     }
     setError(tempErrors)
     console.log('adm')
-    console.log(setError)
     // Nếu object tempErrors trống nghĩa là không có lỗi -> form hợp lệ
     //return Object.keys(tempErrors).length === 0
     return isValid
@@ -112,7 +111,8 @@ const Login = () => {
               <CCard className="p-4">
                 <CCardBody className="d-flex flex-column gap-4">
                   <h2 className="h5 text-center mb-0">Login to your account</h2>
-                  {error && <p style={{ color: 'red' }}>{error}</p>}
+                  {error && <p style={{ color: 'red' }}>{error.adm_account}</p>}
+                  {error && <p style={{ color: 'red' }}>{error.adm_password}</p>}
                   <CForm className="row gy-3" onSubmit={handleSubmit}>
                     <CCol xs={12}>
                       <CFormLabel htmlFor="email">Admin Account</CFormLabel>
@@ -124,8 +124,8 @@ const Login = () => {
                         required
                         onChange={(e) => setAdm_account(e.target.value)}
                       />
-                      {errors.adm_account && (
-                        <p style={{ color: 'red' }}>{errors.adm_account}</p>
+                      {error.adm_account && (
+                        <p style={{ color: 'red' }}>{error.adm_account}</p>
                       )}
                     </CCol>
                     <CCol xs={12}>
@@ -144,8 +144,8 @@ const Login = () => {
                           required
                           onChange={(e) => setAdm_password(e.target.value)}
                         />
-                        {errors.adm_password && (
-                          <p style={{ color: 'red' }}>{errors.adm_password}</p>
+                        {error.adm_password && (
+                          <p style={{ color: 'red' }}>{error.adm_password}</p>
                         )}
                         <CInputGroupText>
                           <CTooltip content="Show password">
