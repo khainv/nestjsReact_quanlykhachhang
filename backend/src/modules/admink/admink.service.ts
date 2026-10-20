@@ -60,4 +60,8 @@ export class AdminkService {
     }
     return this.adminTokenRepository.save(admToken);
   }
+  async delAdminToken(id: number): Promise<any> {
+    const del = await this.adminTokenRepository.delete(id);
+    return del.affected;
+  }
 }

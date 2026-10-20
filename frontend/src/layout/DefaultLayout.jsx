@@ -19,8 +19,14 @@
  * <Route path="*" element={<DefaultLayout />} />
  */
 
-import React from 'react'
-import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
+import React, { useEffect } from 'react'
+import {
+  AppContent,
+  AppSidebar,
+  AppFooter,
+  AppHeader,
+} from '../components/index'
+import { useNavigate } from 'react-router-dom'
 
 /**
  * DefaultLayout functional component
@@ -36,6 +42,13 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/inde
  * @returns {React.ReactElement} Complete application layout
  */
 const DefaultLayout = () => {
+  const navigate = useNavigate() // Khởi tạo hàm điều hướng
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    if (!token) {
+      navigate('/admink/login', { replace: true })
+    }
+  }, [navigate])
   return (
     <div>
       <AppSidebar />

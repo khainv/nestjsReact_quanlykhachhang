@@ -22,55 +22,84 @@ import { logo } from 'src/assets/brand/logo'
 import { eye } from 'src/assets/icons/eye'
 import axios from 'axios'
 const Login = () => {
-  const[adm_account,setAdm_account]=useState('');
-  const[adm_password,setAdm_password]=useState('');
-  const[error,setError]=useState('');
-  const[loading,setLoading]=useState(false);
-  const navigate = useNavigate(); // Khởi tạo hàm điều hướng
+  const [adm_account, setAdm_account] = useState('')
+  const [adm_password, setAdm_password] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate() // Khởi tạo hàm điều hướng
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token')
     if (token) {
       // Thêm thuộc tính { replace: true } để người dùng không bấm nút Back quay lại trang Login được nữa
-      navigate('/dashboard', { replace: true });
+      navigate('/dashboard', { replace: true })
     }
-  }, [navigate]);
+  }, [navigate])
+  const validateForm = () => {
+    const tempErrors = {}
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    let isValid = true
+    // Kiểm tra Email
+    if (!adm_account.trim()) {
+      tempErrors.adm_account = 'Email không được để trống'
+      isValid = false
+    }
+    // Kiểm tra Mật khẩu
+    if (!adm_password) {
+      tempErrors.adm_password = 'Mật khẩu không được để trống'
+      isValid = false
+    } else if (adm_password.length < 6) {
+      tempErrors.adm_password = 'Mật khẩu phải chứa ít nhất 6 ký tự'
+      isValid = false
+    }
+    setError(tempErrors)
+    console.log('adm')
+    console.log(setError)
+    // Nếu object tempErrors trống nghĩa là không có lỗi -> form hợp lệ
+    //return Object.keys(tempErrors).length === 0
+    return isValid
+  }
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Chặn hành vi tải lại trang mặc định của form
-    setError('');
-    setLoading(true);
-
+    e.preventDefault() // Chặn hành vi tải lại trang mặc định của form
+    if (!validateForm()) return
+    setLoading(true)
     try {
       // 3. Gửi dữ liệu qua API bằng phương thức POST lên Backend NestJS
       // Thay đổi URL 'http://localhost:3000' bằng cổng port thực tế của NestJS bên bạn
-      const response = await axios.post('http://localhost:3000/auth/login', {
-        adm_account: adm_account,
-        adm_password: adm_password
-      },{
-      headers: {
-        'Content-Type': 'application/json', // Ép kiểu dữ liệu là JSON
-      }});
+      const response = await axios.post(
+        'http://localhost:3000/auth/login',
+        {
+          adm_account: adm_account,
+          adm_password: adm_password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json', // Ép kiểu dữ liệu là JSON
+          },
+        }
+      )
 
       // 4. Xử lý khi đăng nhập thành công
       console.log(response)
-      console.log('Đăng nhập thành công, dữ liệu nhận về:', response.data);
-      
+      console.log('Đăng nhập thành công, dữ liệu nhận về:', response.data)
+
       // Thông thường bạn sẽ lưu Token (JWT) vào localStorage để dùng cho các request sau
       if (response.data.access_token) {
-        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('access_token', response.data.access_token)
       }
       if (response.data.refresh_token) {
-        localStorage.setItem('refresh_token', response.data.refresh_token);
+        localStorage.setItem('refresh_token', response.data.refresh_token)
       }
       window.location.href = '/dashboard'
-
     } catch (err) {
       // 5. Xử lý khi có lỗi xảy ra (Sai mật khẩu, không kết nối được server...)
       //console.error('Lỗi đăng nhập:', err);
-      setError(err.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại!');
+      setError(
+        err.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại!'
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -95,6 +124,9 @@ const Login = () => {
                         required
                         onChange={(e) => setAdm_account(e.target.value)}
                       />
+                      {errors.adm_account && (
+                        <p style={{ color: 'red' }}>{errors.adm_account}</p>
+                      )}
                     </CCol>
                     <CCol xs={12}>
                       <div className="d-flex justify-content-between">
@@ -110,8 +142,11 @@ const Login = () => {
                           placeholder="Your password"
                           autoComplete="current-password"
                           required
-                        onChange={(e) => setAdm_password(e.target.value)}
+                          onChange={(e) => setAdm_password(e.target.value)}
                         />
+                        {errors.adm_password && (
+                          <p style={{ color: 'red' }}>{errors.adm_password}</p>
+                        )}
                         <CInputGroupText>
                           <CTooltip content="Show password">
                             <CButton
@@ -169,8 +204,7 @@ const Login = () => {
                 </CCardBody>
               </CCard>
               <div className="text-center text-body-secondary">
-                Need an account?{' '}
-                <Link to="/admink/register">Sign up</Link>
+                Need an account? <Link to="/admink/register">Sign up</Link>
               </div>
             </div>
           </CCol>
