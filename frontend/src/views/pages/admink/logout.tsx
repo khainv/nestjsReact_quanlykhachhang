@@ -12,10 +12,7 @@ export default function LogoutPage() {
       navigate('/admink/login', { replace: true })
       return ;
     }
-     let isCalled = false;
     const logout = async () => {
-      if (isCalled) return; // Nếu đã gọi rồi thì chặn các lần gọi sau
-      isCalled = true;
       try {
         // Gọi API logout của NestJS
         const response = await axios.post('http://localhost:3000/admink/logout', {},{
@@ -25,12 +22,17 @@ export default function LogoutPage() {
           },
         })
         console.log(response.data)
+        if(response.data.code>0){
+          localStorage.removeItem('access_token')
+          localStorage.removeItem('refresh_token')
+          navigate('/admink/login', { replace: true })
+        }
       } catch (error) {
         console.error('Logout API error:', error)
       } finally {
         // Xóa access token ở frontend
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
+        //localStorage.removeItem('access_token')
+        //localStorage.removeItem('refresh_token')
         // Chuyển về trang đăng nhập
         //navigate('/admink/login', { replace: true })
       }
