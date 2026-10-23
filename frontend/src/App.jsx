@@ -138,7 +138,7 @@ const App = () => {
           />
           <Route
             exact
-            path="/authentication/password-changed"
+            path="/admink/password-changed"
             name="Password Changed Page"
             element={<PasswordChanged />}
           />

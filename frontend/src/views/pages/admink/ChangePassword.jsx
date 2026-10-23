@@ -12,6 +12,7 @@ import {
 } from '@coreui/react'
 import { URL_BACKEND } from '../../../../constantsk'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 const ChangePassword = () => {
   const navigate = useNavigate() // Khởi tạo hàm điều hướng
   const [adm_password, setAdm_password] = useState('')
@@ -20,38 +21,41 @@ const ChangePassword = () => {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [tempErrors, setTempErrors] = useState({})
+  const errorsk={}
   const validateForm = () => {
     let isValid = true
     // Kiểm tra Email
     if (!adm_password.trim()) {
-      tempErrors.adm_password = 'mật khẩu không được để trống'
+      errorsk.adm_password = 'mật khẩu hiện tại không được để trống'
       isValid = false
     }
     // Kiểm tra Mật khẩu
     if (!adm_passwordNew) {
-      tempErrors.adm_passwordNew = 'Mật khẩu mới không được để trống'
+      errorsk.adm_passwordNew = 'Mật khẩu mới không được để trống'
       isValid = false
     } else if (adm_passwordNew.length < 3) {
-      tempErrors.adm_passwordNew = 'Mật khẩu mới phải chứa ít nhất 3 ký tự'
+      errorsk.adm_passwordNew = 'Mật khẩu mới phải chứa ít nhất 3 ký tự'
       isValid = false
     }
     if (!adm_passwordNew2) {
-      tempErrors.adm_passwordNew2 = 'Mật khẩu xác thực không được để trống'
+      errorsk.adm_passwordNew2 = 'Mật khẩu xác thực không được để trống'
       isValid = false
     }
     if (adm_passwordNew != adm_passwordNew2) {
-      tempErrors.adm_passwordNew2 = 'Mật khẩu xác nhận không khớp'
+      errorsk.adm_passwordNew2 = 'Mật khẩu xác nhận không khớp'
       isValid = false
     }
     if (adm_password == adm_passwordNew) {
-      tempErrors.adm_passwordNew = 'Mật khẩu mới phải khác mật khẩu hiện tại'
+      errorsk.adm_passwordNew = 'Mật khẩu mới phải khác mật khẩu hiện tại'
       isValid = false
     }
-    setTempErrors(tempErrors)
-    console.log(tempErrors)
+    if(isValid==false){
+      setTempErrors(errorsk)
+    }
     return isValid
   }
   const handleSubmit = async (e) => {
+    setTempErrors({})//xóa errors của lần submit trước
     e.preventDefault()
     if (!validateForm()) return
     setLoading(true)
@@ -59,7 +63,7 @@ const ChangePassword = () => {
     try {
       // Gọi API logout của NestJS
       const response = await axios.post(
-        `${URL_BACKEND}/admink/logout`,
+        `${URL_BACKEND}/admink/change-password`,
         { adm_password, adm_passwordNew, adm_passwordNew2 },
         {
           headers: {
@@ -68,18 +72,17 @@ const ChangePassword = () => {
           },
         }
       )
-      console.log(response.data)
-      if (response.data.code > 0) {
+      if (response.data.code >= 0) {
         //localStorage.removeItem('access_token')
         //localStorage.removeItem('refresh_token')
-        //navigate('/admink/password-changed', { replace: true })
+        navigate('/admink/password-changed', { replace: true })
+      }else{
+        errorsk.adm_password=response.data.message;
+        setTempErrors(errorsk);
       }
     } catch (error) {
       console.error('Logout API error:', error)
     } finally {
-      // Xóa access token ở frontend
-      //localStorage.removeItem('access_token')
-      //localStorage.removeItem('refresh_token')
       // Chuyển về trang đăng nhập
       //navigate('/admink/login', { replace: true })
     }
@@ -112,6 +115,7 @@ const ChangePassword = () => {
                       id="adm_password"
                       type="password"
                       placeholder="nhập mật khẩu"
+                      value={adm_password}
                       onChange={(e) => setAdm_password(e.target.value)}
                     />
                   </div>
@@ -122,7 +126,8 @@ const ChangePassword = () => {
                     <CFormInput
                       id="adm_passwordNew"
                       type="password"
-                      placeholder="nhập mật khẩu"
+                      placeholder="nhập mật khẩu mới"
+                      value={adm_passwordNew}
                       onChange={(e) => setAdm_passwordNew(e.target.value)}
                     />
                   </div>
@@ -133,7 +138,8 @@ const ChangePassword = () => {
                     <CFormInput
                       id="adm_passwordNew2"
                       type="password"
-                      placeholder="Nhận lại mật khẩu"
+                      placeholder="Nhận lại mật khẩu mới"
+                      value={adm_passwordNew2}
                       onChange={(e) => setAdm_passwordNew2(e.target.value)}
                     />
                   </div>

@@ -2,7 +2,6 @@ import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { AdminkService } from './admink.service.js';
 import * as bcrypt from 'bcrypt';
 import { isPublic } from '../auth/filter/is.public.router.js';
-import { Code } from 'typeorm/driver/mongodb/bson.typings.js';
 
 @Controller('admink')
 export class AdminkController {
@@ -11,8 +10,6 @@ export class AdminkController {
   @Post('logout')
   async Logout(@Req() req: Request) {
     const authHeader = (req as any).headers.authorization;
-    console.log('check req 2');
-    console.log((req as any).headers);
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return { code: -1, message: 'Không tìm thấy token hợp lệ' };
     }
@@ -40,8 +37,8 @@ export class AdminkController {
     const admId = adminReq.userId;
     const adm_account = adminReq.adm_account;
     const admPassword = body.adm_password;
-    const admPasswordNew = body.adm_password_new;
-    const admPasswordNew2 = body.adm_password_new2;
+    const admPasswordNew = body.adm_passwordNew;
+    const admPasswordNew2 = body.adm_passwordNew2;
     const payload = { code: 0, message: 'Đổi mật khẩu thành công' };
     if (admPasswordNew !== admPasswordNew2) {
       const payload = { code: -1, message: 'Mật khẩu mới không trùng nhau' };
