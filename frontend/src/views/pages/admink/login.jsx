@@ -78,7 +78,6 @@ const Login = () => {
       )
 
       // 4. Xử lý khi đăng nhập thành công
-      console.log(response)
       console.log('Đăng nhập thành công, dữ liệu nhận về:', response.data)
 
       // Thông thường bạn sẽ lưu Token (JWT) vào localStorage để dùng cho các request sau
@@ -112,7 +111,9 @@ const Login = () => {
                 <CCardBody className="d-flex flex-column gap-4">
                   <h2 className="h5 text-center mb-0">Login to your account</h2>
                   {error && <p style={{ color: 'red' }}>{error.adm_account}</p>}
-                  {error && <p style={{ color: 'red' }}>{error.adm_password}</p>}
+                  {error && (
+                    <p style={{ color: 'red' }}>{error.adm_password}</p>
+                  )}
                   <CForm className="row gy-3" onSubmit={handleSubmit}>
                     <CCol xs={12}>
                       <CFormLabel htmlFor="email">Admin Account</CFormLabel>

@@ -535,7 +535,7 @@ const _nav = [
       },
       {
         component: CNavGroup,
-        name: 'Forgot password',
+        name: 'Quên mật khẩu',
         items: [
           {
             component: CNavItem,
@@ -544,12 +544,12 @@ const _nav = [
           },
           {
             component: CNavItem,
-            name: 'Change Password',
-            to: '/authentication/change-password',
+            name: 'Đổi mật khẩu',
+            to: '/admink/change-password',
           },
           {
             component: CNavItem,
-            name: 'Password Changed',
+            name: 'đổi mật khẩu thành công',
             to: '/authentication/password-changed',
           },
         ],

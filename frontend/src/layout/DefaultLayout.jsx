@@ -25,7 +25,7 @@ import {
   AppSidebar,
   AppFooter,
   AppHeader,
-} from '../components/index'
+} from './components/index'
 import { useNavigate } from 'react-router-dom'
 
 /**

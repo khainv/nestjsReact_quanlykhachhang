@@ -15,7 +15,7 @@
  */
 
 import React, { Suspense, useEffect } from 'react'
-import { HashRouter, Route, Routes,BrowserRouter } from 'react-router-dom'
+import { HashRouter, Route, Routes, BrowserRouter } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
@@ -30,9 +30,7 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 // Pages
 const Login = React.lazy(() => import('./views/pages/admink/Login'))
 const Logout = React.lazy(() => import('./views/pages/admink/Logout'))
-const Register = React.lazy(
-  () => import('./views/pages/admink/Register')
-)
+const Register = React.lazy(() => import('./views/pages/admink/Register'))
 const CheckEmail = React.lazy(
   () => import('./views/authentication/check-email/CheckEmail')
 )
@@ -40,10 +38,10 @@ const ResetPassword = React.lazy(
   () => import('./views/authentication/reset-password/ResetPassword')
 )
 const ChangePassword = React.lazy(
-  () => import('./views/authentication/change-password/ChangePassword')
+  () => import('./views/pages/admink/ChangePassword')
 )
 const PasswordChanged = React.lazy(
-  () => import('./views/authentication/password-changed/PasswordChanged')
+  () => import('./views/pages/admink/PasswordChanged')
 )
 const Page404 = React.lazy(() => import('./views/error-pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/error-pages/page500/Page500'))
@@ -134,8 +132,8 @@ const App = () => {
           />
           <Route
             exact
-            path="/authentication/change-password"
-            name="Change Password Page"
+            path="/admink/change-password"
+            name="Đổi mật khẩu"
             element={<ChangePassword />}
           />
           <Route

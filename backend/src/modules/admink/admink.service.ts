@@ -29,7 +29,6 @@ export class AdminkService {
       return null;
     }
     const status = await bcrypt.compareSync(adm_password, adm.adm_password);
-    //console.log('admink.service.validateAdmin', status);
     if (status) {
       return adm;
     }
@@ -46,24 +45,34 @@ export class AdminkService {
     }
     return admToken;
   }
-  async saveRefeshToken(access_token:string,refresh_token: string, adm_id: number) {
+  async saveRefeshToken(
+    access_token: string,
+    refresh_token: string,
+    adm_id: number,
+  ) {
     const adm = await this.findOneAdminToken({ adm_id });
     let admToken: any = {};
     if (!adm) {
       admToken = this.adminTokenRepository.create({
         adm_id: adm_id,
         refresh_token: refresh_token,
-        access_token:access_token
+        access_token: access_token,
       });
     } else {
       admToken.adm_id = adm_id;
       admToken.refresh_token = refresh_token;
-      admToken.access_token=access_token;
+      admToken.access_token = access_token;
     }
     return this.adminTokenRepository.save(admToken);
   }
   async delAdminToken(id: number): Promise<any> {
     const del = await this.adminTokenRepository.delete(id);
     return del.affected;
+  }
+  async changePassWord(id: number, passowrd: string) {
+    const edit = await this.adminRepository.update(id, {
+      adm_password: passowrd,
+    });
+    return edit.affected;
   }
 }
