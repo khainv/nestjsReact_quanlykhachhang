@@ -23,6 +23,15 @@ export class AdminkService {
     }
     return admin;
   }
+  async findOneById(id: number): Promise<Admin> {
+    const admin = await this.adminRepository.findOneBy({ id });
+    if (!admin) {
+      throw new NotFoundException(
+        `Không tìm thấy tài khoản Admin với ID = ${id}`,
+      );
+    }
+    return admin;
+  }
   async validateAdmin(adm_account: string, adm_password: string) {
     const adm = await this.findOne({ adm_account });
     if (!adm) {
@@ -64,6 +73,16 @@ export class AdminkService {
       admToken.access_token = access_token;
     }
     return this.adminTokenRepository.save(admToken);
+  }
+  async verifyRefreshToken(refreshToken: any, adm_id: number) {
+    const adm = await this.adminTokenRepository.findOneBy({ adm_id });
+    if (adm && adm.refresh_token) {
+      const status = await bcrypt.compare(refreshToken, adm.refresh_token);
+      if (status) {
+        return adm;
+      }
+    }
+    return false;
   }
   async delAdminToken(id: number): Promise<any> {
     const del = await this.adminTokenRepository.delete(id);

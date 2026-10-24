@@ -10,16 +10,14 @@ export class JwtRefreshStrategy extends PassportStrategy(
 ) {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromBodyField('refresh_token'),//nhận refresh_token từ body
+      jwtFromRequest: ExtractJwt.fromBodyField('refresh_token'), //nhận refresh_token từ body
       ignoreExpiration: false,
-      secretOrKey: JWT_REFRESH_TOKEN_SECRET
+      secretOrKey: JWT_REFRESH_TOKEN_SECRET,
     });
   }
 
-  async validate(payload: {
-    sub: number;
-    adm_account: string;
-  }) {
+  async validate(payload: { sub: number; adm_account: string }) {
+    console.log('jwt-refresh.strategy.ts validate');
     return {
       userId: payload.sub,
       adm_account: payload.adm_account,

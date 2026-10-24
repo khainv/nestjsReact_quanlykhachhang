@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -13,6 +13,7 @@ import {
 import { URL_BACKEND } from '../../../../constantsk'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import axiosClient from '../../../axiosClient'
 const ChangePassword = () => {
   const navigate = useNavigate() // Khởi tạo hàm điều hướng
   const [adm_password, setAdm_password] = useState('')
@@ -21,7 +22,14 @@ const ChangePassword = () => {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [tempErrors, setTempErrors] = useState({})
-  const errorsk={}
+  const errorsk = {}
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    if (!token) {
+      // Thêm thuộc tính { replace: true } để người dùng không bấm nút Back quay lại trang Login được nữa
+      navigate('/admink/login', { replace: true })
+    }
+  }, [navigate])
   const validateForm = () => {
     let isValid = true
     // Kiểm tra Email
@@ -49,20 +57,20 @@ const ChangePassword = () => {
       errorsk.adm_passwordNew = 'Mật khẩu mới phải khác mật khẩu hiện tại'
       isValid = false
     }
-    if(isValid==false){
+    if (isValid == false) {
       setTempErrors(errorsk)
     }
     return isValid
   }
   const handleSubmit = async (e) => {
-    setTempErrors({})//xóa errors của lần submit trước
+    setTempErrors({}) //xóa errors của lần submit trước
     e.preventDefault()
     if (!validateForm()) return
     setLoading(true)
     const accessToken = localStorage.getItem('access_token')
     try {
       // Gọi API logout của NestJS
-      const response = await axios.post(
+      const response = await axiosClient.post(
         `${URL_BACKEND}/admink/change-password`,
         { adm_password, adm_passwordNew, adm_passwordNew2 },
         {
@@ -76,9 +84,9 @@ const ChangePassword = () => {
         //localStorage.removeItem('access_token')
         //localStorage.removeItem('refresh_token')
         navigate('/admink/password-changed', { replace: true })
-      }else{
-        errorsk.adm_password=response.data.message;
-        setTempErrors(errorsk);
+      } else {
+        errorsk.adm_password = response.data.message
+        setTempErrors(errorsk)
       }
     } catch (error) {
       console.error('Logout API error:', error)

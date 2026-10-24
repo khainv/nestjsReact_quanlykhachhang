@@ -9,10 +9,17 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
 import { LocalStrategy } from './strategies/local.strategy.js';
 import { JwtStrategy } from './strategies/jwt.strategy.js';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy.js';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, JwtAuthGuard],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    JwtAuthGuard,
+    JwtRefreshStrategy,
+  ],
   imports: [
     AdminkModule,
     PassportModule.register({
