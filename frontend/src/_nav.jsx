@@ -280,6 +280,23 @@ const _nav = [
   },
   {
     component: CNavGroup,
+    name: 'Khách hàng',
+    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Danh sách khách hàng',
+        to: '/users/index',
+      },
+      {
+        component: CNavItem,
+        name: 'Thêm khách hàng',
+        to: '/users/add',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
     name: 'Icons',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     items: [

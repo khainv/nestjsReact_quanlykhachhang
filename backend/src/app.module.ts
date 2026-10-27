@@ -10,6 +10,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard.js';
 import { Admin } from './entities/admin.entity.js';
 import { AdminToken } from './entities/admin.token.entity.js';
+import { UsersModule } from './modules/users/users.module.js';
+import { Users } from './entities/users.entity.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -29,11 +31,12 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       username: DB_USER,
       password: DB_PASS,
       database: DB_NAME,
-      entities: [Admin, AdminToken], //auto create table
+      entities: [Admin, AdminToken, Users], //auto create table
       synchronize: true, // Chỉ bật khi code ở môi trường dev
     }),
     AuthModule,
     AdminkModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

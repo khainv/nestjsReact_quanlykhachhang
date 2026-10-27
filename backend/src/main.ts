@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { DataSource } from 'typeorm';
+import { URL_FRONTEND } from './constantsk.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -13,9 +14,9 @@ async function bootstrap() {
   } else {
     console.log('Database connection failed! khainv');
   }
-// Thêm dòng này để bật CORS cho Front-end của bạn
+  // Thêm dòng này để bật CORS cho Front-end của bạn
   app.enableCors({
-    origin: 'http://localhost:5173', // Cho phép Vite/React truy cập
+    origin: URL_FRONTEND, // Cho phép Vite/React truy cập
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Bật nếu bạn có gửi kèm Cookie hoặc JWT qua Header
   });

@@ -31,6 +31,7 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 const Login = React.lazy(() => import('./views/pages/admink/Login'))
 const Logout = React.lazy(() => import('./views/pages/admink/Logout'))
 const Register = React.lazy(() => import('./views/pages/admink/Register'))
+const UsersIndex = React.lazy(() => import('./views/pages/users/Index'))
 const CheckEmail = React.lazy(
   () => import('./views/authentication/check-email/CheckEmail')
 )
@@ -120,9 +121,9 @@ const App = () => {
           />
           <Route
             exact
-            path="/authentication/check-email"
-            name="Check Email Page"
-            element={<CheckEmail />}
+            path="/users/index"
+            name="users add"
+            element={<UsersIndex />}
           />
           <Route
             exact
