@@ -31,19 +31,16 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 const Login = React.lazy(() => import('./views/pages/admink/Login'))
 const Logout = React.lazy(() => import('./views/pages/admink/Logout'))
 const Register = React.lazy(() => import('./views/pages/admink/Register'))
-const UsersIndex = React.lazy(() => import('./views/pages/users/Index'))
-const CheckEmail = React.lazy(
-  () => import('./views/authentication/check-email/CheckEmail')
-)
-const ResetPassword = React.lazy(
-  () => import('./views/authentication/reset-password/ResetPassword')
-)
+
 const ChangePassword = React.lazy(
   () => import('./views/pages/admink/ChangePassword')
 )
 const PasswordChanged = React.lazy(
   () => import('./views/pages/admink/PasswordChanged')
 )
+const UsersIndex = React.lazy(() => import('./views/pages/users/Index'))
+const UsersEdit = React.lazy(() => import('./views/pages/users/edit'))
+
 const Page404 = React.lazy(() => import('./views/error-pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/error-pages/page500/Page500'))
 
@@ -101,6 +98,7 @@ const App = () => {
         }
       >
         <Routes>
+          {/* list route không sử dụng layout quản trị */}
           <Route
             exact
             path="/admink/login"
@@ -118,18 +116,6 @@ const App = () => {
             path="/admink/register"
             name="Register Page"
             element={<Register />}
-          />
-          <Route
-            exact
-            path="/users/index"
-            name="users add"
-            element={<UsersIndex />}
-          />
-          <Route
-            exact
-            path="/authentication/reset-password"
-            name="Reset Password Page"
-            element={<ResetPassword />}
           />
           <Route
             exact
@@ -155,6 +141,7 @@ const App = () => {
             name="Page 500"
             element={<Page500 />}
           />
+          {/* Các trang quản trị dùng layout chung */}
           <Route path="*" name="Home" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
