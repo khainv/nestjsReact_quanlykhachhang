@@ -74,24 +74,22 @@ const Edit = () => {
   // Lưu thông tin đã sửa
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     if (saving) return
-
     try {
       setSaving(true)
       setAlertk({ visible: false })
-
       // Giả định backend có PATCH /users/update/:id
-      const response = await axiosClient.patch(`/users/update/${id}`, formData)
-
+      const response = await axiosClient.patch(
+        `${URL_BACKEND}/users/update/${id}`,
+        formData
+      )
       const result = response.data
-
       if (result?.code === 1) {
-        setSuccess(result.message || 'Cập nhật người dùng thành công!')
-
+        //setSuccess(result.message || 'Cập nhật người dùng thành công!')
+        setAlertk({ visible: true, message: result.message, color: 'success' })
         // Chờ người dùng nhìn thấy thông báo rồi quay lại danh sách
         setTimeout(() => {
-          navigate('/users')
+          navigate('/users/index')
         }, 1000)
       } else {
         setAlertk({
@@ -157,7 +155,7 @@ const Edit = () => {
                 />
               </div>
               <div className="mb-3">
-                <CFormLabel htmlFor="use_name">Tên người dùng</CFormLabel>
+                <CFormLabel htmlFor="use_name">Điện thoại</CFormLabel>
                 <CFormInput
                   id="use_phone"
                   name="use_phone"

@@ -16,6 +16,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     // Dữ liệu trả về sẽ được gắn vào đối tượng req.user
     console.log('jwt.strategy.ts validate');
-    return { userId: payload.sub, adm_account: payload.adm_account };
+    return { admId: payload.sub, adm_account: payload.adm_account };
   }
 }

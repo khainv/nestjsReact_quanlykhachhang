@@ -178,6 +178,9 @@ const Index = () => {
                       <CTableHeaderCell scope="col">Name</CTableHeaderCell>
 
                       <CTableHeaderCell scope="col">Code</CTableHeaderCell>
+                      <CTableHeaderCell scope="col">
+                        Điện thoại
+                      </CTableHeaderCell>
 
                       <CTableHeaderCell scope="col">Địa chỉ</CTableHeaderCell>
 
@@ -196,6 +199,7 @@ const Index = () => {
                           <CTableDataCell>{user.use_name}</CTableDataCell>
 
                           <CTableDataCell>{user.use_code}</CTableDataCell>
+                          <CTableDataCell>{user.use_phone}</CTableDataCell>
 
                           <CTableDataCell>{user.use_address}</CTableDataCell>
 

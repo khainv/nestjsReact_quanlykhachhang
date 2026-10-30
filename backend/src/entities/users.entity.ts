@@ -88,6 +88,12 @@ export class Users {
     default: 1,
   })
   use_status: number;
+  @Column({
+    type: 'tinyint',
+    unsigned: true,
+    default: 0,
+  })
+  use_delete: number;
 
   @Column({
     type: 'int',

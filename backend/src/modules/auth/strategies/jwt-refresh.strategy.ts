@@ -19,7 +19,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   async validate(payload: { sub: number; adm_account: string }) {
     console.log('jwt-refresh.strategy.ts validate');
     return {
-      userId: payload.sub,
+      admId: payload.sub,
       adm_account: payload.adm_account,
     };
   }
