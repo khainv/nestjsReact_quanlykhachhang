@@ -60,7 +60,9 @@ export class UsersController {
   // GET /customers/:id
   @Get('detail/:id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
+    console.log('check controller');
     const rs = await this.usersService.findOne(id);
+    console.log(rs);
     return rs;
   }
 
@@ -103,7 +105,7 @@ export class UsersController {
     if (dto.use_status !== undefined) user.use_status = dto.use_status;
 
     const rs = await this.usersService.update(id, user);
-    return { code: 1, massege: 'cập nhật thành công' };
+    return { code: 1, message: 'cập nhật thành công' };
   }
 
   // DELETE /customers/:id

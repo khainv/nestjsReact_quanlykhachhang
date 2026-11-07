@@ -25,7 +25,7 @@ import axiosClient from '../../../axiosClient'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilPencil } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
-import { URL_BACKEND } from '../../../../constantsk'
+import { COLOR_SUCCESS, URL_BACKEND } from '../../../../constantsk'
 
 const Index = () => {
   const navigate = useNavigate()
@@ -61,6 +61,11 @@ const Index = () => {
       } else {
         setUsers(result.data ?? result.items ?? [])
       }
+      setAlert({
+        visible: false,
+        message: '',
+        color: COLOR_SUCCESS,
+      })
     } catch (err) {
       setAlert({
         visible: true,
@@ -79,6 +84,9 @@ const Index = () => {
   // Chuyển đến trang sửa
   const handleEdit = (user) => {
     navigate(`/users/edit/${user.id}`)
+  }
+  const directK = (link) => {
+    navigate(link)
   }
 
   // Mở modal xác nhận xóa
@@ -196,7 +204,15 @@ const Index = () => {
                             {user.id}
                           </CTableHeaderCell>
 
-                          <CTableDataCell>{user.use_name}</CTableDataCell>
+                          <CTableDataCell>
+                            <CButton
+                              onClick={() =>
+                                directK(`/users/detail/${user.id}`)
+                              }
+                            >
+                              {user.use_name}
+                            </CButton>
+                          </CTableDataCell>
 
                           <CTableDataCell>{user.use_code}</CTableDataCell>
                           <CTableDataCell>{user.use_phone}</CTableDataCell>
