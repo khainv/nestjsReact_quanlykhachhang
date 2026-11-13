@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
+import type { Relation } from 'typeorm';
+import { UsersActivityk } from './users.activity.entity.js';
 @Entity('tblusers')
 @Index('uk_use_code', ['use_code'], { unique: true }) //không cho phép 2 bản ghi cùng 1 code
 @Index('idx_use_phone', ['use_phone'])
@@ -18,7 +20,8 @@ export class Users {
     unsigned: true,
   })
   id: number;
-
+  @OneToMany(() => UsersActivityk, (userActivities) => userActivities.userk)
+  userActivities!: Relation<UsersActivityk[]>; //so nhieu nên để dạng []
   @Column({
     type: 'varchar',
     length: 200,

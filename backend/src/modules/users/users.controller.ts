@@ -59,10 +59,9 @@ export class UsersController {
 
   // GET /customers/:id
   @Get('detail/:id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log('check controller');
+  async detail(@Param('id', ParseIntPipe) id: number) {
+    console.log('users.controller.detail', id);
     const rs = await this.usersService.findOne(id);
-    console.log(rs);
     return rs;
   }
 

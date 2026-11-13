@@ -12,6 +12,8 @@ import { Admin } from './entities/admin.entity.js';
 import { AdminToken } from './entities/admin.token.entity.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { Users } from './entities/users.entity.js';
+import { UserActivitiesModule } from './modules/user-activities/user-activities.module.js';
+import { UsersActivityk } from './entities/users.activity.entity.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -31,12 +33,13 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       username: DB_USER,
       password: DB_PASS,
       database: DB_NAME,
-      entities: [Admin, AdminToken, Users], //auto create table
+      entities: [Admin, AdminToken, Users, UsersActivityk], //auto create table
       synchronize: true, // Chỉ bật khi code ở môi trường dev
     }),
     AuthModule,
     AdminkModule,
     UsersModule,
+    UserActivitiesModule,
   ],
   controllers: [AppController],
   providers: [

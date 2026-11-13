@@ -8,7 +8,7 @@ import {
 
 @Entity('tbladmin')
 export class Admin {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   id: number;
 
   @Column()
