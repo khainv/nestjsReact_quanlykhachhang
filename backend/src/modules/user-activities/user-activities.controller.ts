@@ -1,14 +1,17 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
   Param,
   ParseIntPipe,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import { AddUsersActivitiesDto } from '../../dto/addUsersActivities.Dto.js';
 import { UserActivitiesService } from './user-activities.service.js';
+import { Code } from 'typeorm/driver/mongodb/bson.typings.js';
 interface AuthenticatedRequest extends Request {
   user: {
     admId?: number;
@@ -81,5 +84,20 @@ export class UserActivitiesController {
     const list = await this.userActivitiesService.getActivitiesByUseId(id);
     console.log(list);
     return list;
+  }
+  @Get('get-activitiesk/:id')
+  async getActivitiesk(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('showitems', new DefaultValuePipe(5), ParseIntPipe)
+    showItems: number,
+  ) {
+    console.log('user-activities.controller.get-activities');
+    //console.log('showitemPa', showitemPa);
+
+    //return { code: '123' };
+    let rs = await this.userActivitiesService.findByUser(id, page, showItems);
+    let rs2 = { code: 1, items: rs.items, pagination: rs.pagination };
+    return rs2;
   }
 }

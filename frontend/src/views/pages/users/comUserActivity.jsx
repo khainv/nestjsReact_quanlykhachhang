@@ -5,6 +5,7 @@ import {
   CButton,
   CCard,
   CCardBody,
+  CCardFooter,
   CCardHeader,
   CCol,
   CForm,
@@ -31,12 +32,19 @@ import {
   URL_BACKEND,
 } from '../../../../constantsk'
 import ComUserActivityAdd from './comUserActivityAdd'
+import PaginationCustom from '../../components/PaginationK/PaginationCustom'
 
 const ComUserActivity = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({})
   const [userActivities, setUserActivities] = useState([])
+  const [userActivitiesPagination, setUserActivitiesPagination] = useState({
+    page: 1,
+    totalPages: 0,
+    totalDays: 0,
+    daysPerPage: 2,
+  })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [alerk, setAlertk] = useState({
@@ -45,14 +53,45 @@ const ComUserActivity = () => {
     color: 'success',
   })
   const [tempErrors, setTempErrors] = useState({})
-  const fetchUserActivities = async () => {
+  const onPageChangeK = (page) => {
+    if (
+      page < 1 ||
+      page > userActivitiesPagination.totalPages ||
+      page === userActivitiesPagination.page
+    ) {
+      return
+    }
+
+    fetchUserActivities(id, '', userActivitiesPagination.daysPerPage, page)
+  }
+  const fetchUserActivities = async (
+    use_id,
+    adm_id = null,
+    item = null,
+    page = null
+  ) => {
     try {
+      let str = '?'
+      if (adm_id > 0) {
+        str = str + `&adm_id=${adm_id}`
+      }
+      if (page > 1) {
+        str = str + `&page=${item}`
+      } else {
+        str = str + `&page=1`
+      }
       const rs2 = await axiosClient.get(
-        `${URL_BACKEND}/user-activities/get-activities/${id}`
+        `${URL_BACKEND}/user-activities/get-activitiesk/${use_id}`,
+        {
+          params: {
+            page: page,
+            showitems: userActivitiesPagination.daysPerPage,
+          },
+        }
       )
       const activities = rs2.data
       //const arrAct = Object.values(activities)
-      const gro = activities.reduce((rs, item) => {
+      const gro = activities.items.reduce((rs, item) => {
         const date = new Date(item.created_at).toISOString().slice(0, 10)
         const indexArr = rs.findIndex((ite) => ite.date == date) //tìm index của rs theo date
         if (indexArr == -1) {
@@ -63,13 +102,27 @@ const ComUserActivity = () => {
         return rs //bắt buộc phải return nếu không vòng lặp tiếp theo k nhận được giá trị trước
       }, [])
       setUserActivities(gro)
+      setUserActivitiesPagination(activities.pagination)
+      if (1 == 2) {
+        const gro = activities.reduce((rs, item) => {
+          const date = new Date(item.created_at).toISOString().slice(0, 10)
+          const indexArr = rs.findIndex((ite) => ite.date == date) //tìm index của rs theo date
+          if (indexArr == -1) {
+            rs.push({ date: date, activities: [item] })
+          } else {
+            rs[indexArr].activities.push(item)
+          }
+          return rs //bắt buộc phải return nếu không vòng lặp tiếp theo k nhận được giá trị trước
+        }, [])
+        setUserActivities(gro)
+      }
     } catch (err) {
-      console.log('có lỗi')
+      console.log('có lỗi', err)
     }
   }
   // Lấy thông tin người dùng cần sửa
   useEffect(() => {
-    fetchUserActivities()
+    fetchUserActivities(id)
     const fetchUser = async () => {
       try {
         setLoading(true)
@@ -93,7 +146,7 @@ const ComUserActivity = () => {
     if (id) fetchUser()
   }, [])
   const handleActivityAdded = () => {
-    fetchUserActivities()
+    fetchUserActivities(id)
   }
   const activityRef = useRef(null)
   return (
@@ -214,6 +267,16 @@ const ComUserActivity = () => {
             </>
           )}
         </CCardBody>
+        <CCardFooter>
+          <PaginationCustom
+            page={userActivitiesPagination.page}
+            totalPages={userActivitiesPagination.totalPages}
+            totalItems={userActivitiesPagination.totalDays}
+            itemLabel="ngày có hoạt động"
+            loading={loading}
+            onPageChange={onPageChangeK}
+          ></PaginationCustom>
+        </CCardFooter>
       </CCard>
       <ComUserActivityAdd
         ref={activityRef}

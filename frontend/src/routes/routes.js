@@ -110,6 +110,7 @@ const Widgets = React.lazy(() => import('../views/widgets/Widgets'))
 const UsersIndex = React.lazy(() => import('../views/pages/users/index'))
 const UsersEdit = React.lazy(() => import('../views/pages/users/edit'))
 const UsersDetail = React.lazy(() => import('../views/pages/users/detail'))
+const UsersAdd = React.lazy(() => import('../views/pages/users/add'))
 
 /**
  * Array of route configuration objects
@@ -197,6 +198,7 @@ export const routes = [
   { path: '/users/index', name: 'khách hàng', element: UsersIndex },
   { path: '/users/edit/:id', name: 'khách hàng', element: UsersEdit },
   { path: '/users/detail/:id', name: 'khách hàng', element: UsersDetail },
+  { path: '/users/add', name: 'khách hàng', element: UsersAdd },
 ]
 
 export default routes
